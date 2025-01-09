@@ -7,5 +7,4 @@ require("dotenv").config({ path: envPath });
 const express = require("express")();
 express.listen(process.env.SERVER_PORT, () => {
     console.log("SERVIDOR FUNCIONANDO NA PORTA " + process.env.SERVER_PORT);
-    console.log(envPath);
 });
