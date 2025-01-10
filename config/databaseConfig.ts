@@ -9,6 +9,7 @@ const homedir = require("os").homedir();
 const envPath = join(homedir + "/projetos/etec/TCC/server/.env");
 require("dotenv").config({ path: envPath });
 
+
 const dialectOpt: Array<Dialect> = [
   "mysql",
   "postgres",
@@ -48,7 +49,7 @@ const dialect = validateDialect("DIALECT", dialectOpt);
 
 //esse padrão simples de design garante um erro claro na falha do código e a instanciação única da classe Sequelize
 let singletonSQL: Sequelize | undefined;
-const factorySQL = (): Sequelize | Error => {
+module.exports.SequelizeFactory = (): Sequelize | Error => {
   if (!singletonSQL) {
     const sequelize = new Sequelize(database_name, username, password, {
       host: host,
@@ -66,4 +67,3 @@ const factorySQL = (): Sequelize | Error => {
   return singletonSQL;
 };
 
-module.exports = factorySQL;

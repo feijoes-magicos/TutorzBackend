@@ -6,11 +6,11 @@
     "outDir": "./dist/",
     "rootDir": ".",
     "strict": true,
-    "baseUrl":"./",
+    "baseUrl": "./",
     "paths": {
       "*": ["node_modules/*"]
     }
   },
-  "include": ["./*", "./config/*.ts"],
+  "include": ["./*", "./config/*.ts", "./modelos/*.ts"],
   "exclude": ["node_modules"]
 }

@@ -1,5 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/*
+ *para fins de segurança, toda a parte inicial que configura as variáveis de ambiente
+ *para acesso ao banco de dados serão devidadamente escondidadas e corretamente tipadas
+ * */
 const sequelize_1 = require("sequelize");
 const path_1 = require("path");
 const homedir = require("os").homedir();
@@ -38,13 +42,22 @@ const username = validateForceString("USERNAME");
 const password = validateForceString("PASSWORD");
 const host = validateForceString("HOST");
 const dialect = validateDialect("DIALECT", dialectOpt);
-const sequelize = new sequelize_1.Sequelize(database_name, username, password, {
-    host: host,
-    dialect: dialect,
-});
-try {
-    sequelize.authenticate();
-}
-catch (_a) {
-    console.log("Erro");
-}
+//esse padrão simples de design garante um erro claro na falha do código e a instanciação única da classe Sequelize
+let singletonSQL;
+module.exports.SequelizeFactory = () => {
+    if (!singletonSQL) {
+        const sequelize = new sequelize_1.Sequelize(database_name, username, password, {
+            host: host,
+            dialect: dialect,
+        });
+        try {
+            sequelize.authenticate();
+            singletonSQL = sequelize;
+            return singletonSQL;
+        }
+        catch (_a) {
+            throw new Error("Falha na autenticação do banco de dados relacional");
+        }
+    }
+    return singletonSQL;
+};
