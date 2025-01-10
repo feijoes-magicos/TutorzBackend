@@ -11,6 +11,6 @@
       "*": ["node_modules/*"]
     }
   },
-  "include": ["./*", "./config/*.ts", "./modelos/*.ts"],
+  "include": ["./*", "./config/*.ts", "./modelos/*.ts", "./controladores/*.ts"],
   "exclude": ["node_modules"]
 }

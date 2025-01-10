@@ -21,6 +21,7 @@
     "sequelize": "^6.37.5"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.0"
   }
