@@ -49,7 +49,7 @@ const dialect = validateDialect("DIALECT", dialectOpt);
 
 //esse padrão simples de design garante um erro claro na falha do código e a instanciação única da classe Sequelize
 let singletonSQL: Sequelize | undefined;
-module.exports.SequelizeFactory = (): Sequelize | Error => {
+const SequelizeFactory = () => {
   if (!singletonSQL) {
     const sequelize = new Sequelize(database_name, username, password, {
       host: host,
@@ -67,3 +67,4 @@ module.exports.SequelizeFactory = (): Sequelize | Error => {
   return singletonSQL;
 };
 
+module.exports = {SequelizeFactory} 
