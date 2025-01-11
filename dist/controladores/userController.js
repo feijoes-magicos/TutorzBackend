@@ -19,14 +19,15 @@ const modelValidator = (x) => {
         return false;
     }
 };
-//função assíncrona que usa hash para descaracterizar a senha e grava o payload da request no banco de dados
-const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const hash = yield bcrypt.hash(payload.senha, 10);
-    const MaybeModel = new Promise((resolve) => {
-        const userModel = require("../modelos/userModel");
-        resolve(userModel);
-    });
-    MaybeModel.then((instance) => {
+const MaybeModel = new Promise((resolve) => {
+    const userModel = require("../modelos/userModel");
+    resolve(userModel);
+});
+//função de middleware para o roteador do express
+const createUserRequestHandler = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    //tentativa e retorno variado na criação de usuários no sistema ou no erro resultante do sequelize e suas operações
+    const hash = yield bcrypt.hash(request.body.senha, 10);
+    yield MaybeModel.then((instance) => {
         const isModel = modelValidator(instance);
         if (isModel) {
             return instance;
@@ -36,15 +37,20 @@ const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         }
     })
         .then((model) => {
-        model.create({
-            CPF: payload.CPF,
-            email: payload.email,
-            nome_usuario: payload.nome_usuario,
+        return model.create({
+            CPF: request.body.CPF,
+            email: request.body.email,
+            nome_usuario: request.body.nome_usuario,
             senha: hash,
         });
     })
+        .then(() => {
+        response.status(200).json({ message: "Usuário criado com sucesso" });
+    })
         .catch((e) => {
-        console.log(e);
+        response.status(500).json({ message: "falha ao criar o usuário", Error: e.name || "Erro desconhecido" });
     });
 });
-module.exports = { createUser };
+/*
+ */
+module.exports = { createUserRequestHandler };
