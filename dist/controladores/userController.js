@@ -45,10 +45,17 @@ const createUserRequestHandler = (request, response) => __awaiter(void 0, void 0
         });
     })
         .then(() => {
-        response.status(200).json({ message: "Usuário criado com sucesso" });
+        response
+            .status(200)
+            .json({ message: "Usuário criado com sucesso" });
     })
         .catch((e) => {
-        response.status(500).json({ message: "falha ao criar o usuário", Error: e.name || "Erro desconhecido" });
+        response
+            .status(500)
+            .json({
+            message: "falha ao criar o usuário",
+            Error: e.name || "Erro desconhecido",
+        });
     });
 });
 /*

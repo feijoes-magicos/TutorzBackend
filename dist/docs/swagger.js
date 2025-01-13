@@ -14,9 +14,9 @@ const opt = {
             version: "1.0.0",
             description: "API para um aplicativo voltado à tutoria",
         },
-        servers: [{ url: `http:/localhost:${process.env.SERVER_PORT}` }],
+        servers: [{ url: "/api" }]
     },
-    apis: ["../rotas/*.js"],
+    apis: ["../rotas/*.ts"],
 };
 const especificacao = SwaggerJsDoc(opt);
 const servidorDoc = SwaggerUi.serve;
