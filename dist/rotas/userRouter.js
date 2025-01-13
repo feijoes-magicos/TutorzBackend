@@ -46,7 +46,7 @@ const userController = require("../controladores/userController");
     *           404:
     *               description: rota não encontrada
     *           500:
-    *               description: Objeto jsonc com mensagem de feedback
+    *               description: Objeto json com mensagem de feedback
     *               content:
     *                   application/json:
     *                       type: object
