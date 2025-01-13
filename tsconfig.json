@@ -11,6 +11,6 @@
       "*": ["node_modules/*"]
     }
   },
-  "include": ["./*", "./config/*.ts", "./modelos/*.ts", "./controladores/*.ts", "./middleware/*.ts", "./rotas/*.ts"],
+  "include": ["./*", "./config/*.ts", "./modelos/*.ts", "./controladores/*.ts", "./middleware/*.ts", "./rotas/*.ts", "./docs/*ts"],
   "exclude": ["node_modules"]
 }

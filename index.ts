@@ -5,12 +5,14 @@ const homedir = require("os").homedir()
 const envPath = join(homedir+"/projetos/etec/TCC/server/.env")
 require("dotenv").config({path:envPath})
 
+const {docUI, servidorDoc} = require("./docs/swagger")
 const userRoutes = require("./rotas/userRouter")
 
 const express:Application = require("express")()
 const jsonParser = require("express").json()
 
 express.use(jsonParser)
+
 express.listen(
 	process.env.SERVER_PORT,
 	() => {
@@ -19,3 +21,4 @@ express.listen(
 )
 
 express.use("/api", userRoutes)
+express.use("/api-docs", servidorDoc, docUI)
