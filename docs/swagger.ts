@@ -16,7 +16,13 @@ const opt: Options = {
             version: "1.0.0",
             description: "API para um aplicativo voltado à tutoria",
         },
-		servers:[{url:"/api"}]
+        servers: [{ url: "/api" }],
+        tags: [
+            {
+                name: "Autenticação",
+                description: "Controle de cadastro e login de usuários",
+            },
+        ],
     },
     apis: ["../rotas/*.ts"],
 };

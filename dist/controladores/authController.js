@@ -33,15 +33,14 @@ const createToken = (request, response, next) => __awaiter(void 0, void 0, void 
         };
     })
         .then((metadados) => {
-        var _a;
+        var _a, _b;
         if (metadados.comparacao) {
-            const token = jwt.sign((_a = metadados.query) === null || _a === void 0 ? void 0 : _a.dataValues, process.env.SECRET_KEY);
-            response.status(200).json({ token: token });
+            const token = jwt.sign((_a = metadados.query) === null || _a === void 0 ? void 0 : _a.dataValues, process.env.SECRET_KEY, { expiresIn: "1h" });
+            response.status(200).json({ usuario: (_b = metadados.query) === null || _b === void 0 ? void 0 : _b.dataValues.nome_usuario, token: token });
         }
     })
         .catch((e) => {
         response.status(500).json({ message: "falha ao autenticar o usuario", Error: e.name || "erro desconhecido" });
-        console.log(e);
     });
 });
 module.exports = { createToken };

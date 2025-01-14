@@ -29,7 +29,7 @@ const createToken: RequestHandler = async (request, response, next) => {
         })
         .then((metadados) => {
             if (metadados.comparacao) {
-                const token = jwt.sign(metadados.query?.dataValues, process.env.SECRET_KEY);
+                const token = jwt.sign(metadados.query?.dataValues, process.env.SECRET_KEY, {expiresIn:"1h"});
                 response.status(200).json({ usuario:metadados.query?.dataValues.nome_usuario, token: token });
             }
         })

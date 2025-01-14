@@ -7,7 +7,7 @@ require("dotenv").config({ path: envPath });
 
 
 const userRoutes = require("./rotas/userRouter");
-const authRoutes = require("./rotas/authRoutes")
+const authRoutes = require("./rotas/authRouter")
 
 const express: Application = require("express")();
 const jsonParser = require("express").json();

@@ -5,7 +5,7 @@ const homedir = require("os").homedir();
 const envPath = (0, path_1.join)(homedir + "/projetos/etec/TCC/server/.env");
 require("dotenv").config({ path: envPath });
 const userRoutes = require("./rotas/userRouter");
-const authRoutes = require("./rotas/authRoutes");
+const authRoutes = require("./rotas/authRouter");
 const express = require("express")();
 const jsonParser = require("express").json();
 express.use(jsonParser);

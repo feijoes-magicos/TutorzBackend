@@ -28,13 +28,15 @@ const userController = require("../controladores/userController");
     * @swagger
     * /user:
     *   post:
-    *       summary: Tentativa de instanciação de usuário no banco de dados
+    *       summary: Tentativa de criação de usuário no banco de dados
     *       requestBody:
     *           required: true
     *           content:
     *               application/json:
     *                   schema:
     *                       $ref: '#/components/schemas/Usuario'
+    *       tags:
+    *           - Autenticação
     *       responses:
     *           200:
     *               description: Objeto json com mensagem de feedback
