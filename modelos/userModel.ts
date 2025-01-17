@@ -56,7 +56,6 @@ const userModel: Promise<ModelUser | Error> = (async () => {
     if (!erro) {
         Minstancia.sync();
     }
-
     return Minstancia;
 });
 
