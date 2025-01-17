@@ -1,10 +1,20 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 /*
  *para fins de segurança, toda a parte inicial que configura as variáveis de ambiente
  *para acesso ao banco de dados serão devidadamente escondidadas e corretamente tipadas
  * */
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
+const mongodb_1 = require("mongodb");
 const path_1 = require("path");
 const homedir = require("os").homedir();
 const envPath = (0, path_1.join)(homedir + "/projetos/etec/TCC/server/.env");
@@ -41,6 +51,7 @@ const database_name = validateForceString("DATABASE_NAME");
 const username = validateForceString("USERNAME");
 const password = validateForceString("PASSWORD");
 const host = validateForceString("HOST");
+const connection_string = validateForceString("CONNECTION_STRING");
 const dialect = validateDialect("DIALECT", dialectOpt);
 //esse padrão simples de design garante um erro claro na falha do código e a instanciação única da classe Sequelize
 let singletonSQL;
@@ -61,4 +72,19 @@ const SequelizeFactory = () => {
     }
     return singletonSQL;
 };
-module.exports = { SequelizeFactory };
+let singletonClient;
+const AtlasFactory = () => __awaiter(void 0, void 0, void 0, function* () {
+    if (!singletonClient) {
+        try {
+            singletonClient = new mongodb_1.MongoClient(connection_string);
+            yield singletonClient.connect();
+            console.log("Servidor conectado ao mongodb com sucesso");
+        }
+        catch (error) {
+            singletonClient = undefined;
+            console.log(error);
+        }
+    }
+    return singletonClient;
+});
+module.exports = { SequelizeFactory, AtlasFactory };
