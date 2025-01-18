@@ -1,5 +1,10 @@
-import { RequestHandler } from "express";
 import { Collection, MongoClient } from "mongodb";
+
+type modules = {
+	nameModule:string
+	description:string
+	aproxTimeMinutes:number
+}
 
 type Course = {
 	_id: string;
@@ -7,7 +12,7 @@ type Course = {
 	description: string;
 	rating: number;
 	totalSubscribers: number
-	modules: Array<object>;
+	modules: Array<modules>;
 	tutorID: string;
 };
 
@@ -21,7 +26,7 @@ const AtlasFactory: Promise<MongoClient | undefined> = new Promise(
 	},
 );
 
-const courseModel = (async () => {
+const courseModel:CourseModel = (async () => {
 	const collection: Collection<Course> | undefined = await AtlasFactory.then(
 		(instancia) => {
 			if (instancia instanceof MongoClient) {
@@ -36,3 +41,4 @@ const courseModel = (async () => {
 })();
 
 module.exports = courseModel
+export type CourseModel = Promise<Collection<Course>|undefined>
