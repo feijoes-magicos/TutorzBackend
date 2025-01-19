@@ -3,6 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const router = require('express').Router();
 const { createToken } = require("../controladores/authController");
 /**
+ * @swagger
+ * components:
+ *  securitySchemes:
+ *      BearerAuth:
+ *          type: http
+ *          scheme: bearer
+ *          bearerFormat: JWT
+ */
+/**
     * @swagger
     * /login:
     *   post:
