@@ -4,14 +4,41 @@ import { CourseModel } from "../modelos/courseModel";
 const courses: CourseModel = require("../modelos/courseModel");
 
 const getAllCourses: RequestHandler = async (request, response) => {
-	await courses
-		.then((maybeCourse) => maybeCourse?.find().toArray())
-		.then((dados) => {
-			response.status(200).send(dados);
-		})
-		.catch((e) => {
-			console.log(e);
-			response.status(500).send("Erro");
-		});
+    const search = request.headers.search;
+    const pipeline = [
+        {
+            $search: {
+                index: "default",
+                compound: {
+                    should: [
+                        {
+                            autocomplete: {
+                                query: search,
+                                path: "subject",
+                                fuzzy: {
+                                    maxEdits: 2,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+        },
+    ];
+
+    await courses
+        .then((maybeCourse) => {
+            if (!search) {
+                return maybeCourse?.find().toArray();
+            }
+            return maybeCourse?.aggregate(pipeline).toArray();
+        })
+        .then((dados) => {
+            response.status(200).send(dados);
+        })
+        .catch((e) => {
+            console.log(e);
+            response.status(500).send("Erro");
+        });
 };
-module.exports = {getAllCourses}
+module.exports = { getAllCourses };

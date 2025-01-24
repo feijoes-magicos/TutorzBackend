@@ -11,8 +11,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const courses = require("../modelos/courseModel");
 const getAllCourses = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const search = request.headers.search;
+    const pipeline = [
+        {
+            $search: {
+                index: "default",
+                compound: {
+                    should: [
+                        {
+                            autocomplete: {
+                                query: search,
+                                path: "subject",
+                                fuzzy: {
+                                    maxEdits: 2,
+                                },
+                            },
+                        },
+                    ],
+                },
+            },
+        },
+    ];
     yield courses
-        .then((maybeCourse) => maybeCourse === null || maybeCourse === void 0 ? void 0 : maybeCourse.find().toArray())
+        .then((maybeCourse) => {
+        if (!search) {
+            return maybeCourse === null || maybeCourse === void 0 ? void 0 : maybeCourse.find().toArray();
+        }
+        return maybeCourse === null || maybeCourse === void 0 ? void 0 : maybeCourse.aggregate(pipeline).toArray();
+    })
         .then((dados) => {
         response.status(200).send(dados);
     })

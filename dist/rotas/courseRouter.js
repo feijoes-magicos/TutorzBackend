@@ -13,6 +13,9 @@ const authentication = require("../middleware/authentication");
  *              _id:
  *                  type: string
  *                  description: identificador do curso
+ *              subject:
+ *                  type: string
+ *                  description: materia do curso
  *              nameCourse:
  *                  type: string
  *                  description: nome do curso
@@ -46,27 +49,34 @@ const authentication = require("../middleware/authentication");
 /**
  * @swagger
  * /courses:
- *   get:
- *       tags:
- *           - Cursos
- *       summary: Retorna cursos ao usuário
- *       security:
- *           - BearerAuth: []
- *       responses:
- *           200:
- *               description: Retorna os cursos para uso local
- *               content:
- *                   application/json:
- *                       schema:
- *                           type: array
- *                           items:
- *                              $ref: "#/components/schemas/Cursos"
  *
- *           401:
- *               description: Falha na autenticação da requisição
- *               content:
- *                   text/plain:
- *                       description: Retorno de erro de autenticação
+ *  get:
+ *      parameters:
+ *          - in: header
+ *            name: search
+ *            required: false
+ *            description: campo que contém a pesquisa do usuário
+ *            schema:
+ *              type: string
+ *      tags:
+ *          - Cursos
+ *      summary: Retorna cursos ao usuário
+ *      security:
+ *          - BearerAuth: []
+ *      responses:
+ *          200:
+ *              description: Retorna os cursos para uso local
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                             $ref: "#/components/schemas/Cursos"
+ *          401:
+ *              description: Falha na autenticação da requisição
+ *              content:
+ *                  text/plain:
+ *                      description: Retorno de erro de autenticação
  *
  */
 router.get("/courses", authentication, getAllCourses);
