@@ -1,4 +1,4 @@
-import type { ModelUser, UserCreationAttributes } from "../modelos/userModel";
+import type {ModelUser} from "../modelos/userModel";
 import { Request, Response, type RequestHandler } from "express";
 const bcrypt = require("bcrypt");
 

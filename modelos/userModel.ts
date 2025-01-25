@@ -60,14 +60,14 @@ const userModel: Promise<ModelUser | Error> = (async () => {
 });
 
 module.exports = userModel;
-export interface UserAttributes {
+interface UserAttributes {
     cod_usuario: number;
     nome_usuario: string;
     email: string;
     senha: string;
     CPF: string;
 }
-export interface UserCreationAttributes {
+interface UserCreationAttributes {
     nome_usuario: string;
     email: string;
     senha: string;
