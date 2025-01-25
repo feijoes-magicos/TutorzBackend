@@ -19,15 +19,13 @@ const modelValidator = (x) => {
         return false;
     }
 };
-const MaybeModel = new Promise((resolve) => {
-    const userModel = require("../modelos/userModel");
-    resolve(userModel);
-});
+const userModel = require("../modelos/userModel");
 //função de middleware para o roteador do express
 const createUserRequestHandler = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     //tentativa e retorno variado na criação de usuários no sistema ou no erro resultante do sequelize e suas operações
     const hash = yield bcrypt.hash(request.body.senha, 10);
-    yield MaybeModel.then((instance) => {
+    yield userModel
+        .then((instance) => {
         const isModel = modelValidator(instance);
         if (isModel) {
             return instance;
@@ -37,12 +35,15 @@ const createUserRequestHandler = (request, response) => __awaiter(void 0, void 0
         }
     })
         .then((model) => {
-        return model.create({
-            CPF: request.body.CPF,
-            email: request.body.email,
-            nome_usuario: request.body.nome_usuario,
-            senha: hash,
-        });
+        if (modelValidator(model)) {
+            return model.create({
+                CPF: request.body.CPF,
+                email: request.body.email,
+                nome_usuario: request.body.nome_usuario,
+                senha: hash,
+            });
+        }
+        throw new Error("Modelo não válido");
     })
         .then(() => {
         response
@@ -50,9 +51,7 @@ const createUserRequestHandler = (request, response) => __awaiter(void 0, void 0
             .json({ message: "Usuário criado com sucesso" });
     })
         .catch((e) => {
-        response
-            .status(500)
-            .json({
+        response.status(500).json({
             message: "falha ao criar o usuário",
             Error: e.name || "Erro desconhecido",
         });

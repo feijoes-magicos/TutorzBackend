@@ -15,16 +15,23 @@ const envPath = (0, path_1.join)(homedir + "/projetos/etec/TCC/server/.env");
 require("dotenv").config({ path: envPath });
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const userModel = new Promise((resolve) => {
-    const MaybeModel = require("../modelos/userModel");
-    resolve(MaybeModel);
-});
+const modelValidator = (x) => {
+    if (x.rawAttributes) {
+        return true;
+    }
+    else {
+        return false;
+    }
+};
+const userModel = require("../modelos/userModel");
 const createToken = (request, response, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, senha } = request.body;
     userModel
         .then((modelo) => {
-        const dados = modelo.findOne({ where: { email: email } });
-        return dados;
+        if (modelValidator(modelo)) {
+            const dados = modelo.findOne({ where: { email: email } });
+            return dados;
+        }
     })
         .then((dados) => {
         return {
@@ -36,11 +43,21 @@ const createToken = (request, response, next) => __awaiter(void 0, void 0, void 
         var _a, _b;
         if (metadados.comparacao) {
             const token = jwt.sign((_a = metadados.query) === null || _a === void 0 ? void 0 : _a.dataValues, process.env.SECRET_KEY, { expiresIn: "1h" });
-            response.status(200).json({ usuario: (_b = metadados.query) === null || _b === void 0 ? void 0 : _b.dataValues.nome_usuario, token: token });
+            response
+                .status(200)
+                .json({
+                usuario: (_b = metadados.query) === null || _b === void 0 ? void 0 : _b.dataValues.nome_usuario,
+                token: token,
+            });
         }
     })
         .catch((e) => {
-        response.status(500).json({ message: "falha ao autenticar o usuario", Error: e.name || "erro desconhecido" });
+        response
+            .status(500)
+            .json({
+            message: "falha ao autenticar o usuario",
+            Error: e.name || "erro desconhecido",
+        });
     });
 });
 module.exports = { createToken };

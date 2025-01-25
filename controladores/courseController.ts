@@ -5,7 +5,6 @@ const courses: CourseModel = require("../modelos/courseModel");
 
 const getAllCourses: RequestHandler = async (request, response) => {
     const search = request.headers.search;
-	console.log(request.body.user)
     const pipeline = [
         {
             $search: {

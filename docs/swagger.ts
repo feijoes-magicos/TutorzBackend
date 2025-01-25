@@ -22,9 +22,12 @@ const opt: Options = {
                 name: "Autenticação",
                 description: "Controle de cadastro e login de usuários",
             },{
-				name: "Cursos",
-				description: "Manipulação e consumo dos cursos"
-			}
+                name: "Cursos",
+                description: "Manipulação e consumo dos cursos",
+            },{
+                name: "UsuarioCursos",
+                description: "Manipulação e consumo dos cursos",
+            },
         ],
     },
     apis: ["../rotas/*.ts"],

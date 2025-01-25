@@ -21,8 +21,11 @@ const opt = {
                 description: "Controle de cadastro e login de usuários",
             }, {
                 name: "Cursos",
-                description: "Manipulação e consumo dos cursos"
-            }
+                description: "Manipulação e consumo dos cursos",
+            }, {
+                name: "UsuarioCursos",
+                description: "Manipulação e consumo dos cursos",
+            },
         ],
     },
     apis: ["../rotas/*.ts"],

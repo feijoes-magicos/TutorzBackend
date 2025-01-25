@@ -7,6 +7,7 @@ require("dotenv").config({ path: envPath });
 const userRoutes = require("./rotas/userRouter");
 const authRoutes = require("./rotas/authRouter");
 const courseRoutes = require("./rotas/courseRouter");
+const userCourseRoutes = require("./rotas/userCourseRouter");
 const express = require("express")();
 const jsonParser = require("express").json();
 express.use(jsonParser);
@@ -16,5 +17,6 @@ express.listen(process.env.SERVER_PORT, () => {
 express.use("/api", userRoutes);
 express.use("/api", authRoutes);
 express.use("/api", courseRoutes);
+express.use("/api", userCourseRoutes);
 const { docUI, servidorDoc } = require("./docs/swagger");
 express.use("/api-docs", servidorDoc, docUI);

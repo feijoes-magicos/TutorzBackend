@@ -18,7 +18,7 @@ const maybeSequelize = SequelizeFactory();
 const isSequelize = sequelizeValidator(maybeSequelize);
 const userModel = (() => __awaiter(void 0, void 0, void 0, function* () {
     if (isSequelize) {
-        const sequelize = maybeSequelize.define("USUARIO", {
+        return maybeSequelize.define("USUARIO", {
             cod_usuario: {
                 type: sequelize_1.DataTypes.BIGINT,
                 allowNull: false,
@@ -47,16 +47,14 @@ const userModel = (() => __awaiter(void 0, void 0, void 0, function* () {
         }, {
             tableName: "USUARIO",
         });
-        return sequelize;
     }
-    else {
-        return new Error("falha em criar tabela");
-    }
-}))().then((Minstancia) => {
-    const erro = Minstancia instanceof Error;
-    if (!erro) {
+    return undefined;
+}))()
+    .then((Minstancia) => {
+    if (Minstancia) {
         Minstancia.sync();
     }
     return Minstancia;
-});
+})
+    .catch(() => undefined);
 module.exports = userModel;

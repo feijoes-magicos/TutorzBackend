@@ -9,17 +9,24 @@ require("dotenv").config({ path: envPath });
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
-const userModel: Promise<ModelUser> = new Promise((resolve) => {
-    const MaybeModel = require("../modelos/userModel");
-    resolve(MaybeModel);
-});
+const modelValidator = (x: any): x is ModelUser => {
+    if (x.rawAttributes) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+const userModel:ModelUser = require("../modelos/userModel")
 
 const createToken: RequestHandler = async (request, response, next) => {
     const { email, senha } = request.body;
     userModel
         .then((modelo) => {
-            const dados = modelo.findOne({ where: { email: email } });
-            return dados;
+            if (modelValidator(modelo)) {
+                const dados = modelo.findOne({ where: { email: email } });
+                return dados;
+            }
         })
         .then((dados) => {
             return {
@@ -29,12 +36,26 @@ const createToken: RequestHandler = async (request, response, next) => {
         })
         .then((metadados) => {
             if (metadados.comparacao) {
-                const token = jwt.sign(metadados.query?.dataValues, process.env.SECRET_KEY, {expiresIn:"1h"});
-                response.status(200).json({ usuario:metadados.query?.dataValues.nome_usuario, token: token });
+                const token = jwt.sign(
+                    metadados.query?.dataValues,
+                    process.env.SECRET_KEY,
+                    { expiresIn: "1h" },
+                );
+                response
+                    .status(200)
+                    .json({
+                        usuario: metadados.query?.dataValues.nome_usuario,
+                        token: token,
+                    });
             }
         })
         .catch((e) => {
-            response.status(500).json({ message:"falha ao autenticar o usuario", Error: e.name || "erro desconhecido" });
+            response
+                .status(500)
+                .json({
+                    message: "falha ao autenticar o usuario",
+                    Error: e.name || "erro desconhecido",
+                });
         });
 };
 
