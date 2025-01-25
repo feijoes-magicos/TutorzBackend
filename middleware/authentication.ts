@@ -14,7 +14,7 @@ const authMiddleware:RequestHandler = async (request, response, next) => {
 	}
 	const token = request.headers["authorization"].split(" ")[1]
 	try{
-		await jsonwebtoken.verify(token, process.env.SECRET_KEY)
+		request.body.user = await jsonwebtoken.verify(token, process.env.SECRET_KEY)
 		next()
 	}catch(e){
 		response.status(401).send("Falha na autenticação")

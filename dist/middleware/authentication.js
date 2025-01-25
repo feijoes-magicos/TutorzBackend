@@ -21,7 +21,7 @@ const authMiddleware = (request, response, next) => __awaiter(void 0, void 0, vo
     }
     const token = request.headers["authorization"].split(" ")[1];
     try {
-        yield jsonwebtoken.verify(token, process.env.SECRET_KEY);
+        request.body.user = yield jsonwebtoken.verify(token, process.env.SECRET_KEY);
         next();
     }
     catch (e) {

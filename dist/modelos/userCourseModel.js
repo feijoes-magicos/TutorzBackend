@@ -33,7 +33,7 @@ const userCourseModel = (() => __awaiter(void 0, void 0, void 0, function* () {
                 allowNull: false,
                 defaultValue: 0,
             },
-        });
+        }, { tableName: "USUARIO_CURSO" });
     }
     return undefined;
 }))().then((MInstance) => {

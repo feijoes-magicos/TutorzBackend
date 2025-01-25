@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const courses = require("../modelos/courseModel");
 const getAllCourses = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const search = request.headers.search;
+    console.log(request.body.user);
     const pipeline = [
         {
             $search: {
