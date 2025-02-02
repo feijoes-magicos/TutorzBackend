@@ -22,7 +22,6 @@ const data = JSON.stringify({ grant_type: "client_credentials" });
 const data_credenciais = `${credenciais.client_id}:${credenciais.client_secret}`;
 
 const auth = Buffer.from(data_credenciais).toString("base64");
-console.log(auth);
 
 const agent = new https.Agent({
     pfx: certificado,
@@ -40,9 +39,9 @@ const config = {
     httpsAgent: agent,
 };
 
-let efiConnectionSingleton: object | undefined;
+let efiConnectionSingleton: EfiConnection;
 
-const efiConnectionFactory = async (recreate?: boolean) => {
+const efiConnectionFactory:EfiConnectionGenerator = async (recreate?: boolean) => {
     if (recreate || !efiConnectionSingleton ) {
         await axios(config)
             .then((res: AxiosResponse) => {
@@ -56,3 +55,12 @@ const efiConnectionFactory = async (recreate?: boolean) => {
 };
 
 module.exports = efiConnectionFactory;
+
+interface EfiResponse {
+	access_token: string
+	token_type: string
+	expires_in: number
+	scope: string
+}
+export type EfiConnection = EfiResponse | undefined
+export type EfiConnectionGenerator = (recreate?: boolean) => Promise<EfiConnection>

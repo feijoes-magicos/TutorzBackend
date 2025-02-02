@@ -25,7 +25,6 @@ const credenciais = {
 const data = JSON.stringify({ grant_type: "client_credentials" });
 const data_credenciais = `${credenciais.client_id}:${credenciais.client_secret}`;
 const auth = Buffer.from(data_credenciais).toString("base64");
-console.log(auth);
 const agent = new https.Agent({
     pfx: certificado,
     passphrase: "",
@@ -42,7 +41,6 @@ const config = {
 };
 let efiConnectionSingleton;
 const efiConnectionFactory = (recreate) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(`\x1b[1;31mRECREATE: ${recreate}\x1b[m`);
     if (recreate || !efiConnectionSingleton) {
         yield axios(config)
             .then((res) => {
@@ -54,11 +52,4 @@ const efiConnectionFactory = (recreate) => __awaiter(void 0, void 0, void 0, fun
     }
     return efiConnectionSingleton;
 });
-const TesteFuncao = (recreate) => __awaiter(void 0, void 0, void 0, function* () {
-    const teste = yield efiConnectionFactory(recreate);
-    console.log(teste);
-});
-TesteFuncao();
-TesteFuncao();
-TesteFuncao();
-module.exports = efiConnectionSingleton;
+module.exports = efiConnectionFactory;
