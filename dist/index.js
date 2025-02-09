@@ -2,6 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const NodeCache = require("node-cache");
 const path_1 = require("path");
+const fs_1 = require("fs");
+const https = require("https");
 const homedir = require("os").homedir();
 const envPath = (0, path_1.join)(homedir + "/projetos/etec/TCC/server/.env");
 require("dotenv").config({ path: envPath });
@@ -12,7 +14,12 @@ const userCourseRoutes = require("./rotas/userCourseRouter");
 const express = require("express")();
 const jsonParser = require("express").json();
 express.use(jsonParser);
-express.listen(process.env.SERVER_PORT, () => {
+const httpsServer = https.createServer({
+    key: (0, fs_1.readFileSync)(homedir + "/projetos/etec/TCC/server/assets/ssl/chave.pem"),
+    cert: (0, fs_1.readFileSync)(homedir + "/projetos/etec/TCC/server/assets/ssl/certificado.pem"),
+    minVersion: "TLSv1.2"
+}, express);
+httpsServer.listen(process.env.SERVER_PORT, () => {
     console.log("SERVIDOR FUNCIONANDO NA PORTA " + process.env.SERVER_PORT);
 });
 express.use("/api", userRoutes);

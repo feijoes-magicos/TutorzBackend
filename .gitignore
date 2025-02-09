@@ -1,3 +1,5 @@
 node_modules/
 .env
 assets/certificado.p12
+assets/ssl/chave.pem
+assets/ssl/csr.pem

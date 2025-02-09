@@ -1,8 +1,11 @@
-import { execFile } from "child_process";
 import type { EfiConnectionGenerator } from "./config/payment";
 import type { Application } from "express";
+import { Server } from "https";
 import NodeCache = require("node-cache");
 import { join } from "path";
+import { readFileSync } from "fs";
+
+const https = require("https")
 
 const homedir = require("os").homedir();
 const envPath = join(homedir + "/projetos/etec/TCC/server/.env");
@@ -18,7 +21,13 @@ const jsonParser = require("express").json();
 
 express.use(jsonParser);
 
-express.listen(process.env.SERVER_PORT, () => {
+const httpsServer:Server = https.createServer({
+	key: readFileSync(homedir+"/projetos/etec/TCC/server/assets/ssl/chave.pem"),
+	cert:readFileSync(homedir+"/projetos/etec/TCC/server/assets/ssl/certificado.pem"),
+	minVersion:"TLSv1.2"
+}, express)
+
+httpsServer.listen(process.env.SERVER_PORT, () => {
 	console.log("SERVIDOR FUNCIONANDO NA PORTA " + process.env.SERVER_PORT);
 });
 
